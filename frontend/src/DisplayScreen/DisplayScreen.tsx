@@ -18,7 +18,9 @@ const DisplayScreen: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const fetchState = () => {
-      fetch("http://192.168.0.191:3001/get-state")
+      fetch(
+        "https://5481-2607-f598-ba60-365-f44a-422f-29c6-315f.ngrok-free.app/get-state"
+      )
         .then((res) => res.json())
         .then((data) => {
           if (isMounted) setState(data);
@@ -64,7 +66,7 @@ const DisplayScreen: React.FC = () => {
         </span>
       </div>
       <span
-        className="font-bold"
+        className="fonwht-bold"
         style={{
           color: "#3A3A32",
           fontSize: "3rem",

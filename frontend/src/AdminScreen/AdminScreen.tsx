@@ -8,11 +8,14 @@ const AdminScreen: React.FC = () => {
     e.preventDefault();
     setStatus(null);
     try {
-      const res = await fetch("http://192.168.0.191:3001/update-title", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title }),
-      });
+      const res = await fetch(
+        "https://5481-2607-f598-ba60-365-f44a-422f-29c6-315f.ngrok-free.app/update-title",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title }),
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         setStatus("Title updated successfully!");
