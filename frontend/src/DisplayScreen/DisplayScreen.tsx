@@ -9,19 +9,12 @@ const DisplayScreen: React.FC = () => {
   useEffect(() => {
     let isMounted = true;
     const fetchGifMeta = () => {
-      fetch("http://localhost:3001/get-image-meta")
+      fetch("http://192.168.0.191:3001/get-image-meta")
         .then((res) => res.json())
         .then((meta) => {
-          if (isMounted && meta.id !== gifId) {
+          if (isMounted) {
             setGifId(meta.id);
-            fetch(meta.url)
-              .then((res) => res.blob())
-              .then((blob) => {
-                setGifUrl((prev) => {
-                  if (prev) URL.revokeObjectURL(prev);
-                  return URL.createObjectURL(blob);
-                });
-              });
+            setGifUrl(meta.url);
           }
         });
     };
@@ -30,14 +23,12 @@ const DisplayScreen: React.FC = () => {
     return () => {
       isMounted = false;
       clearInterval(interval);
-      setGifUrl((prev) => {
-        if (prev) URL.revokeObjectURL(prev);
-        return null;
-      });
+      setGifUrl(null);
     };
     // eslint-disable-next-line
   }, [gifId]);
 
+  console.log(gifUrl);
   return (
     <div className="h-screen flex flex-col items-center pt-12 font-sans">
       <img
