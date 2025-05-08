@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../red-cheeks-logo.jpg";
+import igLogo from "../ig-logo.png";
 
 const DisplayScreen: React.FC = () => {
   return (
@@ -15,9 +16,14 @@ const DisplayScreen: React.FC = () => {
           marginBottom: "3.5rem",
         }}
       />
+      <img
+        src={igLogo}
+        alt="Instagram Logo"
+        style={{ width: "2.5rem", height: "2.5rem", marginBottom: "1rem" }}
+      />
       <span
         className="font-bold"
-        style={{ color: "#F28B82", fontSize: "3rem" }}
+        style={{ color: "#F28B82", fontSize: "3rem", fontWeight: 900 }}
       >
         Hello
       </span>
