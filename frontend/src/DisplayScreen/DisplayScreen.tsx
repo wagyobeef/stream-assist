@@ -50,7 +50,7 @@ const DisplayScreen: React.FC = () => {
         className="font-bold"
         style={{ color: "#6B6B6B", fontSize: "1.75rem", fontWeight: 400 }}
       >
-        This is some placeholder text
+        Condition on sleeve if not NM
       </span>
       <img
         src={happyPika}
