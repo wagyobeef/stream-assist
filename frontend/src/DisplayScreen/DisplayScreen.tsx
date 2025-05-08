@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../red-cheeks-logo.jpg";
 import igLogo from "../ig-logo.png";
-import happyPika from "../gifs/happy-pika.gif";
 
 const DisplayScreen: React.FC = () => {
+  const [gifUrl, setGifUrl] = useState<string | null>(null);
+  const [gifId, setGifId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchGifMeta = () => {
+      fetch("http://localhost:3001/get-image-meta")
+        .then((res) => res.json())
+        .then((meta) => {
+          if (isMounted && meta.id !== gifId) {
+            setGifId(meta.id);
+            fetch(meta.url)
+              .then((res) => res.blob())
+              .then((blob) => {
+                setGifUrl((prev) => {
+                  if (prev) URL.revokeObjectURL(prev);
+                  return URL.createObjectURL(blob);
+                });
+              });
+          }
+        });
+    };
+    fetchGifMeta(); // initial fetch
+    const interval = setInterval(fetchGifMeta, 5000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+      setGifUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return null;
+      });
+    };
+    // eslint-disable-next-line
+  }, [gifId]);
+
   return (
     <div className="h-screen flex flex-col items-center pt-12 font-sans">
       <img
@@ -52,11 +86,13 @@ const DisplayScreen: React.FC = () => {
       >
         Condition on sleeve if not NM
       </span>
-      <img
-        src={happyPika}
-        alt="Happy Pikachu"
-        style={{ marginTop: "3rem", width: "18rem", height: "auto" }}
-      />
+      {gifUrl && (
+        <img
+          src={gifUrl}
+          alt="Gif"
+          style={{ marginTop: "3rem", width: "18rem", height: "auto" }}
+        />
+      )}
     </div>
   );
 };
