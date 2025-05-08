@@ -16,14 +16,20 @@ const DisplayScreen: React.FC = () => {
           marginBottom: "2.5rem",
         }}
       />
-      <div className="flex flex-row items-center mb-16">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "2.5rem",
+        }}
+      >
         <img
           src={igLogo}
           alt="Instagram Logo"
           style={{ width: "2rem", height: "2rem", marginRight: "0.75rem" }}
         />
         <span
-          style={{ color: "#ED8C8C", fontSize: "2.25rem", fontWeight: 600 }}
+          style={{ color: "#C24141", fontSize: "2.25rem", fontWeight: 600 }}
         >
           redcheekstcg
         </span>
