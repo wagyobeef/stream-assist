@@ -2,33 +2,36 @@ import React, { useEffect, useState } from "react";
 import logo from "../red-cheeks-logo.jpg";
 import igLogo from "../ig-logo.png";
 
+interface State {
+  title: string;
+  subtitle: string;
+  image: {
+    id: string;
+    url: string;
+    label?: string;
+  };
+}
+
 const DisplayScreen: React.FC = () => {
-  const [gifUrl, setGifUrl] = useState<string | null>(null);
-  const [gifId, setGifId] = useState<string | null>(null);
+  const [state, setState] = useState<State | null>(null);
 
   useEffect(() => {
     let isMounted = true;
-    const fetchGifMeta = () => {
-      fetch("http://192.168.0.191:3001/get-image-meta")
+    const fetchState = () => {
+      fetch("http://192.168.0.191:3001/get-state")
         .then((res) => res.json())
-        .then((meta) => {
-          if (isMounted) {
-            setGifId(meta.id);
-            setGifUrl(meta.url);
-          }
+        .then((data) => {
+          if (isMounted) setState(data);
         });
     };
-    fetchGifMeta(); // initial fetch
-    const interval = setInterval(fetchGifMeta, 5000);
+    fetchState();
+    const interval = setInterval(fetchState, 1000);
     return () => {
       isMounted = false;
       clearInterval(interval);
-      setGifUrl(null);
     };
-    // eslint-disable-next-line
-  }, [gifId]);
+  }, []);
 
-  console.log(gifUrl);
   return (
     <div className="h-screen flex flex-col items-center pt-12 font-sans">
       <img
@@ -69,18 +72,18 @@ const DisplayScreen: React.FC = () => {
           marginBottom: ".5rem",
         }}
       >
-        $2 start single or lot
+        {state ? state.title : ""}
       </span>
       <span
         className="font-bold"
         style={{ color: "#6B6B6B", fontSize: "1.75rem", fontWeight: 400 }}
       >
-        Condition on sleeve if not NM
+        {state ? state.subtitle : ""}
       </span>
-      {gifUrl && (
+      {state && state.image && state.image.url && (
         <img
-          src={gifUrl}
-          alt="Gif"
+          src={state.image.url}
+          alt={state.image.label || "Gif"}
           style={{ marginTop: "3rem", width: "18rem", height: "auto" }}
         />
       )}
