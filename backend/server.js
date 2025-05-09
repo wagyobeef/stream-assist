@@ -25,7 +25,7 @@ try {
   console.error("Error writing state.json:", err);
 }
 
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // Serve static gifs
@@ -36,6 +36,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/get-state", (req, res) => {
+  console.log("get state is getting hit");
   const statePath = path.join(__dirname, "database/state.json");
   try {
     const state = JSON.parse(fs.readFileSync(statePath, "utf8"));
@@ -69,6 +70,6 @@ app.post("/update-title", (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server listening on http://0.0.0.0:${PORT}`);
 });

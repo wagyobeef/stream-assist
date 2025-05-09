@@ -19,11 +19,20 @@ const DisplayScreen: React.FC = () => {
     let isMounted = true;
     const fetchState = () => {
       fetch(
-        "https://5481-2607-f598-ba60-365-f44a-422f-29c6-315f.ngrok-free.app/get-state"
+        "https://16a7-2607-f598-ba60-365-f44a-422f-29c6-315f.ngrok-free.app/get-state"
       )
-        .then((res) => res.json())
-        .then((data) => {
-          if (isMounted) setState(data);
+        .then(async (res) => {
+          const text = await res.text();
+          try {
+            const data = JSON.parse(text);
+            if (isMounted) setState(data);
+          } catch (err) {
+            console.error("Response was not valid JSON. Raw response:", text);
+            throw err;
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching state:", err);
         });
     };
     fetchState();
