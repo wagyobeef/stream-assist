@@ -1,5 +1,5 @@
 module.exports = [
-  "Welcome in",
+  "Welcome in!",
   "$2 start single or lot",
   "Damaged lot",
   "Claims lot (non-$1 start)",
