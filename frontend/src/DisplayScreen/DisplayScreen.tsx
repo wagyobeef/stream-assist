@@ -96,7 +96,7 @@ const DisplayScreen: React.FC = () => {
       </span>
       {state && state.image && state.image.url && state.image.url !== "" && (
         <img
-          src={state.image.url}
+          src={`${API_BASE_URL}${state.image.url}`}
           alt={state.image.label || "Gif"}
           style={{ marginTop: "3rem", width: "18rem", height: "auto" }}
         />
