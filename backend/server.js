@@ -6,7 +6,6 @@ require("dotenv").config();
 const app = express();
 const PORT = 3001;
 const DEV_MODE = process.env.DEV_MODE === "true";
-const HOST = DEV_MODE ? "localhost" : "0.0.0.0";
 
 // Reset state.json with default state on server startup
 const defaultState = {
@@ -18,14 +17,14 @@ const defaultState = {
     label: "Default Image",
   },
 };
-try {
-  fs.writeFileSync(
-    path.join(__dirname, "database/state.json"),
-    JSON.stringify(defaultState, null, 2)
-  );
-  console.log("Default state written to state.json");
-} catch (err) {
-  console.error("Error writing state.json:", err);
+const statePath = path.join(__dirname, "database/state.json");
+if (!fs.existsSync(statePath)) {
+  try {
+    fs.writeFileSync(statePath, JSON.stringify(defaultState, null, 2));
+    console.log("Default state written to state.json");
+  } catch (err) {
+    console.error("Error writing state.json:", err);
+  }
 }
 
 app.use(cors({ origin: "*" }));
