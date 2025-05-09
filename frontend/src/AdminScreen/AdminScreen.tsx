@@ -95,110 +95,159 @@ const AdminScreen: React.FC = () => {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <form
-        onSubmit={handleSubmit}
+      <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
           width: "100%",
           maxWidth: 400,
+          background: "#fff",
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+          padding: 48,
         }}
       >
-        {/* Title Section */}
-        <div style={{ width: "100%", marginBottom: "2rem" }}>
-          <div style={{ fontWeight: 700, marginBottom: ".5rem" }}>Title</div>
-          {Array.isArray(presetTitles) &&
-            presetTitles.map((preset) => (
-              <label
-                key={preset}
-                style={{ display: "block", marginBottom: ".5rem" }}
-              >
-                <input
-                  type="radio"
-                  name="title"
-                  value={preset}
-                  checked={titleMode === "preset" && selectedPreset === preset}
-                  onChange={handleTitleChange}
-                  style={{ marginRight: ".5rem" }}
-                />
-                {preset}
-              </label>
-            ))}
-          <label style={{ display: "block", marginBottom: ".5rem" }}>
-            <input
-              type="radio"
-              name="title"
-              value="custom"
-              checked={titleMode === "custom"}
-              onChange={handleTitleChange}
-              style={{ marginRight: ".5rem" }}
-            />
-            Custom:
-            <input
-              type="text"
-              value={customTitle}
-              onChange={handleCustomTitleChange}
-              disabled={titleMode !== "custom"}
-              placeholder="Enter custom title"
-              style={{
-                fontSize: "1.1rem",
-                padding: "0.5rem",
-                marginLeft: ".5rem",
-              }}
-            />
-          </label>
-        </div>
-        {/* Subtitle Section */}
-        <div style={{ width: "100%", marginBottom: "2rem" }}>
-          <div style={{ fontWeight: 700, marginBottom: ".5rem" }}>Subtitle</div>
-          <input
-            type="text"
-            value={subtitle}
-            onChange={(e) => setSubtitle(e.target.value)}
-            placeholder="Enter new subtitle"
-            style={{ fontSize: "1.1rem", padding: "0.5rem", width: "100%" }}
-          />
-        </div>
-        {/* Image Section */}
-        <div style={{ width: "100%", marginBottom: "2rem" }}>
-          <div style={{ fontWeight: 700, marginBottom: ".5rem" }}>Image</div>
-          <select
-            value={imageId}
-            onChange={(e) => setImageId(e.target.value)}
-            style={{ fontSize: "1.1rem", padding: "0.5rem", width: "100%" }}
-          >
-            <option value="">No Image</option>
-            {imageOptions.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button
-          type="submit"
+        <form
+          onSubmit={handleSubmit}
           style={{
-            fontSize: "1.2rem",
-            padding: "0.75rem 2rem",
-            marginTop: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+            width: "100%",
           }}
         >
-          Submit
-        </button>
-        {status && (
-          <div
+          {/* Title Section */}
+          <div style={{ width: "100%", marginBottom: "2rem" }}>
+            <div
+              style={{
+                fontWeight: 700,
+                marginBottom: ".5rem",
+                textAlign: "left",
+              }}
+            >
+              Title
+            </div>
+            {Array.isArray(presetTitles) &&
+              presetTitles.map((preset) => (
+                <label
+                  key={preset}
+                  style={{
+                    display: "block",
+                    marginBottom: ".5rem",
+                    textAlign: "left",
+                    width: "100%",
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="title"
+                    value={preset}
+                    checked={
+                      titleMode === "preset" && selectedPreset === preset
+                    }
+                    onChange={handleTitleChange}
+                    style={{ marginRight: ".5rem" }}
+                  />
+                  {preset}
+                </label>
+              ))}
+            <label
+              style={{
+                display: "block",
+                marginBottom: ".5rem",
+                textAlign: "left",
+                width: "100%",
+              }}
+            >
+              <input
+                type="radio"
+                name="title"
+                value="custom"
+                checked={titleMode === "custom"}
+                onChange={handleTitleChange}
+                style={{ marginRight: ".5rem" }}
+              />
+              Custom:
+              <input
+                type="text"
+                value={customTitle}
+                onChange={handleCustomTitleChange}
+                disabled={titleMode !== "custom"}
+                placeholder="Enter custom title"
+                style={{
+                  fontSize: "1.1rem",
+                  padding: "0.5rem",
+                  marginLeft: ".5rem",
+                }}
+              />
+            </label>
+          </div>
+          {/* Subtitle Section */}
+          <div style={{ width: "100%", marginBottom: "2rem" }}>
+            <div
+              style={{
+                fontWeight: 700,
+                marginBottom: ".5rem",
+                textAlign: "left",
+              }}
+            >
+              Subtitle
+            </div>
+            <input
+              type="text"
+              value={subtitle}
+              onChange={(e) => setSubtitle(e.target.value)}
+              placeholder="Enter new subtitle"
+              style={{ fontSize: "1.1rem", padding: "0.5rem", width: "100%" }}
+            />
+          </div>
+          {/* Image Section */}
+          <div style={{ width: "100%", marginBottom: "2rem" }}>
+            <div
+              style={{
+                fontWeight: 700,
+                marginBottom: ".5rem",
+                textAlign: "left",
+              }}
+            >
+              Image
+            </div>
+            <select
+              value={imageId}
+              onChange={(e) => setImageId(e.target.value)}
+              style={{ fontSize: "1.1rem", padding: "0.5rem", width: "100%" }}
+            >
+              <option value="">No Image</option>
+              {imageOptions.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            type="submit"
             style={{
+              fontSize: "1.2rem",
+              padding: "0.75rem 2rem",
               marginTop: "1rem",
-              fontSize: "1rem",
-              color: status.includes("success") ? "green" : "red",
-              fontWeight: 600,
             }}
           >
-            {status}
-          </div>
-        )}
-      </form>
+            Submit
+          </button>
+          {status && (
+            <div
+              style={{
+                marginTop: "1rem",
+                fontSize: "1rem",
+                color: status.includes("success") ? "green" : "red",
+                fontWeight: 600,
+                textAlign: "center",
+              }}
+            >
+              {status}
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 };
