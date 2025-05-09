@@ -22,16 +22,41 @@ const AdminScreen: React.FC = () => {
   useEffect(() => {
     setError(null);
     fetch(`${API_BASE_URL}/get-image-options`)
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) {
+          let errorMsg = `Failed to load image options. Status: ${res.status} ${res.statusText}`;
+          try {
+            const data = await res.json();
+            if (data && data.error) errorMsg += ` - ${data.error}`;
+          } catch {
+            // Ignore JSON parsing error
+          }
+          throw new Error(errorMsg);
+        }
+        return res.json();
+      })
       .then((data) => {
         setImageOptions(data);
       })
-      .catch(() => {
+      .catch((err) => {
         setImageOptions([]);
-        setError("Failed to load image options.");
+        setError(err.message);
       });
+
     fetch(`${API_BASE_URL}/get-preset-titles`)
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (!res.ok) {
+          let errorMsg = `Failed to load preset titles. Status: ${res.status} ${res.statusText}`;
+          try {
+            const data = await res.json();
+            if (data && data.error) errorMsg += ` - ${data.error}`;
+          } catch {
+            // Ignore JSON parsing error
+          }
+          throw new Error(errorMsg);
+        }
+        return res.json();
+      })
       .then((data) => {
         setPresetTitles(data);
         if (data.length > 0) {
@@ -39,9 +64,9 @@ const AdminScreen: React.FC = () => {
           setTitle(data[0]);
         }
       })
-      .catch(() => {
+      .catch((err) => {
         setPresetTitles([]);
-        setError("Failed to load preset titles.");
+        setError(err.message);
       });
   }, []);
 
@@ -109,18 +134,6 @@ const AdminScreen: React.FC = () => {
           padding: 48,
         }}
       >
-        {error && (
-          <div
-            style={{
-              color: "red",
-              marginBottom: 16,
-              fontWeight: 600,
-              textAlign: "center",
-            }}
-          >
-            {error}
-          </div>
-        )}
         <form
           onSubmit={handleSubmit}
           style={{
@@ -263,6 +276,18 @@ const AdminScreen: React.FC = () => {
             </div>
           )}
         </form>
+        {error && (
+          <div
+            style={{
+              color: "red",
+              marginTop: "1rem",
+              fontWeight: 600,
+              textAlign: "center",
+            }}
+          >
+            {error}
+          </div>
+        )}
       </div>
     </div>
   );
