@@ -39,7 +39,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/get-state", (req, res) => {
-  console.log("get state is getting hit");
   const statePath = path.join(__dirname, "database/state.json");
   try {
     const state = JSON.parse(fs.readFileSync(statePath, "utf8"));
@@ -49,25 +48,42 @@ app.get("/get-state", (req, res) => {
   }
 });
 
-// Endpoint to update the title field in state.json
-app.post("/update-title", (req, res) => {
-  console.log("updating title");
-  const { title } = req.body;
+// Remove /update-title endpoint and add /set-state endpoint
+app.post("/set-state", (req, res) => {
+  const { title, subtitle, imageId } = req.body;
   if (typeof title !== "string" || !title.trim()) {
     return res.status(400).json({ error: "Invalid title" });
   }
-  const statePath = path.join(__dirname, "database/state.json");
-  console.log(statePath);
-  let state;
-  try {
-    state = JSON.parse(fs.readFileSync(statePath, "utf8"));
-  } catch (err) {
-    return res.status(500).json({ error: "Could not read state.json" });
+  if (typeof subtitle !== "string") {
+    return res.status(400).json({ error: "Invalid subtitle" });
   }
-  state.title = title;
+  if (typeof imageId !== "string" || !imageId.trim()) {
+    return res.status(400).json({ error: "Invalid imageId" });
+  }
+  const statePath = path.join(__dirname, "database/state.json");
+  const gifsPath = path.join(__dirname, "database/gifs.json");
+  let imageInfo;
   try {
-    fs.writeFileSync(statePath, JSON.stringify(state, null, 2));
-    res.json({ success: true, title });
+    const gifs = JSON.parse(fs.readFileSync(gifsPath, "utf8"));
+    imageInfo = gifs.find((gif) => gif.id === imageId);
+    if (!imageInfo) {
+      return res.status(400).json({ error: "Image ID not found in gifs.json" });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: "Could not read gifs.json" });
+  }
+  const newState = {
+    title,
+    subtitle,
+    image: {
+      id: imageInfo.id,
+      url: imageInfo.url,
+      label: imageInfo.label,
+    },
+  };
+  try {
+    fs.writeFileSync(statePath, JSON.stringify(newState, null, 2));
+    res.json({ success: true, state: newState });
   } catch (err) {
     res.status(500).json({ error: "Could not write to state.json" });
   }
