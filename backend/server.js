@@ -4,6 +4,8 @@ const cors = require("cors");
 const fs = require("fs");
 const app = express();
 const PORT = 3001;
+const DEV_MODE = process.env.DEV_MODE === "true";
+const HOST = DEV_MODE ? "localhost" : "3.17.187.202";
 
 // Reset state.json with default state on server startup
 const defaultState = {
@@ -70,6 +72,6 @@ app.post("/update-title", (req, res) => {
   }
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server listening on http://0.0.0.0:${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Server listening on http://${HOST}:${PORT}`);
 });
