@@ -13,12 +13,14 @@ const AdminScreen: React.FC = () => {
     { id: string; label: string; url: string }[]
   >([]);
   const [status, setStatus] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [presetTitles, setPresetTitles] = useState<string[]>([]);
   const [titleMode, setTitleMode] = useState<"preset" | "custom">("preset");
   const [selectedPreset, setSelectedPreset] = useState<string>("");
   const [customTitle, setCustomTitle] = useState<string>("");
 
   useEffect(() => {
+    setError(null);
     fetch(`${API_BASE_URL}/get-image-options`)
       .then((res) => res.json())
       .then((data) => {
@@ -26,6 +28,7 @@ const AdminScreen: React.FC = () => {
       })
       .catch(() => {
         setImageOptions([]);
+        setError("Failed to load image options.");
       });
     fetch(`${API_BASE_URL}/get-preset-titles`)
       .then((res) => res.json())
@@ -38,6 +41,7 @@ const AdminScreen: React.FC = () => {
       })
       .catch(() => {
         setPresetTitles([]);
+        setError("Failed to load preset titles.");
       });
   }, []);
 
@@ -105,6 +109,18 @@ const AdminScreen: React.FC = () => {
           padding: 48,
         }}
       >
+        {error && (
+          <div
+            style={{
+              color: "red",
+              marginBottom: 16,
+              fontWeight: 600,
+              textAlign: "center",
+            }}
+          >
+            {error}
+          </div>
+        )}
         <form
           onSubmit={handleSubmit}
           style={{
