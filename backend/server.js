@@ -88,6 +88,17 @@ app.post("/set-state", (req, res) => {
   }
 });
 
+// Endpoint to get image options from gifs.json
+app.get("/get-image-options", (req, res) => {
+  const gifsPath = path.join(__dirname, "database/gifs.json");
+  try {
+    const gifs = JSON.parse(fs.readFileSync(gifsPath, "utf8"));
+    res.json(gifs);
+  } catch (err) {
+    res.status(500).json({ error: "Could not read gifs.json" });
+  }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server listening on http://0.0.0.0:${PORT}`);
 });

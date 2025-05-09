@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const API_BASE_URL =
   import.meta.env.VITE_DEV_MODE === "true"
     ? "http://localhost:3001"
     : "https://live.redcheekstcg.com";
 
-const imageOptions = [
-  { id: "", label: "None", url: "" },
-  { id: "default-image-id", label: "Default Image", url: "" },
-  {
-    id: "dancing-pika",
-    label: "Dancing Pikachu",
-    url: "/gifs/dancing-pika.gif",
-  },
-  { id: "crying-pika", label: "Crying Pikachu", url: "/gifs/crying-pika.gif" },
-];
-
 const AdminScreen: React.FC = () => {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [imageId, setImageId] = useState(imageOptions[0].id);
+  const [imageId, setImageId] = useState("");
+  const [imageOptions, setImageOptions] = useState<
+    { id: string; label: string; url: string }[]
+  >([]);
   const [status, setStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/get-image-options`)
+      .then((res) => res.json())
+      .then((data) => {
+        setImageOptions([{ id: "", label: "None", url: "" }, ...data]);
+      })
+      .catch(() => {
+        setImageOptions([{ id: "", label: "None", url: "" }]);
+      });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
