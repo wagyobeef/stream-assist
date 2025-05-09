@@ -6,7 +6,7 @@ require("dotenv").config();
 const app = express();
 const PORT = 3001;
 const DEV_MODE = process.env.DEV_MODE === "true";
-const HOST = DEV_MODE ? "localhost" : "3.17.187.202";
+const HOST = DEV_MODE ? "localhost" : "0.0.0.0";
 
 // Reset state.json with default state on server startup
 const defaultState = {
