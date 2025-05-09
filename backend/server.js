@@ -5,7 +5,6 @@ const fs = require("fs");
 require("dotenv").config();
 const app = express();
 const PORT = 3001;
-const DEV_MODE = process.env.DEV_MODE === "true";
 
 // Reset state.json with default state on server startup
 const defaultState = {
@@ -102,15 +101,14 @@ app.get("/get-image-options", (req, res) => {
   }
 });
 
-// Endpoint to get preset titles from titles.js
+// Endpoint to get preset titles from titles.json
 app.get("/get-preset-titles", (req, res) => {
-  const titlesPath = path.join(__dirname, "database/titles.js");
+  const titlesPath = path.join(__dirname, "database/titles.json");
   try {
-    // titles.js should export an array of strings
-    const titles = require(titlesPath);
+    const titles = JSON.parse(fs.readFileSync(titlesPath, "utf8"));
     res.json(titles);
   } catch (err) {
-    res.status(500).json({ error: "Could not read titles.js" });
+    res.status(500).json({ error: "Could not read titles.json" });
   }
 });
 
