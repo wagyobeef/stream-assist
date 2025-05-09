@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 
+const API_BASE_URL =
+  import.meta.env.VITE_DEV_MODE === "true"
+    ? "http://localhost:3001"
+    : "http://3.17.187.202:3001";
+
 const AdminScreen: React.FC = () => {
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState<string | null>(null);
@@ -8,14 +13,11 @@ const AdminScreen: React.FC = () => {
     e.preventDefault();
     setStatus(null);
     try {
-      const res = await fetch(
-        "https://5481-2607-f598-ba60-365-f44a-422f-29c6-315f.ngrok-free.app/update-title",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title }),
-        }
-      );
+      const res = await fetch(`${API_BASE_URL}/update-title`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title }),
+      });
       const data = await res.json();
       if (res.ok) {
         setStatus("Title updated successfully!");

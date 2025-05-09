@@ -12,15 +12,18 @@ interface State {
   };
 }
 
+const API_BASE_URL =
+  import.meta.env.VITE_DEV_MODE === "true"
+    ? "http://localhost:3001"
+    : "http://3.17.187.202:3001";
+
 const DisplayScreen: React.FC = () => {
   const [state, setState] = useState<State | null>(null);
 
   useEffect(() => {
     let isMounted = true;
     const fetchState = () => {
-      fetch(
-        "https://16a7-2607-f598-ba60-365-f44a-422f-29c6-315f.ngrok-free.app/get-state"
-      )
+      fetch(`${API_BASE_URL}/get-state`)
         .then(async (res) => {
           const text = await res.text();
           try {
