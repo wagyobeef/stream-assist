@@ -18,10 +18,10 @@ const AdminScreen: React.FC = () => {
     fetch(`${API_BASE_URL}/get-image-options`)
       .then((res) => res.json())
       .then((data) => {
-        setImageOptions([{ id: "", label: "None", url: "" }, ...data]);
+        setImageOptions(data);
       })
       .catch(() => {
-        setImageOptions([{ id: "", label: "None", url: "" }]);
+        setImageOptions([]);
       });
   }, []);
 
@@ -104,6 +104,7 @@ const AdminScreen: React.FC = () => {
             onChange={(e) => setImageId(e.target.value)}
             style={{ fontSize: "1.1rem", padding: "0.5rem", width: "100%" }}
           >
+            <option value="">No Image</option>
             {imageOptions.map((opt) => (
               <option key={opt.id} value={opt.id}>
                 {opt.label}
