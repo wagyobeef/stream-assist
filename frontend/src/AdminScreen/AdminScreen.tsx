@@ -6,6 +6,7 @@ const API_BASE_URL =
     : "https://live.redcheekstcg.com";
 
 const imageOptions = [
+  { id: "", label: "None", url: "" },
   { id: "default-image-id", label: "Default Image", url: "" },
   {
     id: "dancing-pika",

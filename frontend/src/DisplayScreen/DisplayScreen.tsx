@@ -94,7 +94,7 @@ const DisplayScreen: React.FC = () => {
       >
         {state ? state.subtitle : ""}
       </span>
-      {state && state.image && state.image.url && (
+      {state && state.image && state.image.url && state.image.url !== "" && (
         <img
           src={state.image.url}
           alt={state.image.label || "Gif"}
