@@ -18,5 +18,10 @@
     "id": "angry-pika",
     "label": "Angry Pikachu",
     "url": "/gifs/angry-pika.gif"
+  },
+  {
+    "id": "subway-surfer",
+    "label": "Subway Surfer",
+    "url": "/gifs/subway-surfer.gif"
   }
 ]
