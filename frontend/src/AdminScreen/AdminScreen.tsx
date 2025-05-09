@@ -13,6 +13,10 @@ const AdminScreen: React.FC = () => {
     { id: string; label: string; url: string }[]
   >([]);
   const [status, setStatus] = useState<string | null>(null);
+  const [presetTitles, setPresetTitles] = useState<string[]>([]);
+  const [titleMode, setTitleMode] = useState<"preset" | "custom">("preset");
+  const [selectedPreset, setSelectedPreset] = useState<string>("");
+  const [customTitle, setCustomTitle] = useState<string>("");
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/get-image-options`)
@@ -23,7 +27,34 @@ const AdminScreen: React.FC = () => {
       .catch(() => {
         setImageOptions([]);
       });
+    fetch(`${API_BASE_URL}/get-preset-titles`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPresetTitles(data);
+        if (data.length > 0) {
+          setSelectedPreset(data[0]);
+          setTitle(data[0]);
+        }
+      })
+      .catch(() => {
+        setPresetTitles([]);
+      });
   }, []);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleMode(e.target.value === "custom" ? "custom" : "preset");
+    if (e.target.value === "custom") {
+      setTitle(customTitle);
+    } else {
+      setSelectedPreset(e.target.value);
+      setTitle(e.target.value);
+    }
+  };
+
+  const handleCustomTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomTitle(e.target.value);
+    setTitle(e.target.value);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,13 +108,46 @@ const AdminScreen: React.FC = () => {
         {/* Title Section */}
         <div style={{ width: "100%", marginBottom: "2rem" }}>
           <div style={{ fontWeight: 700, marginBottom: ".5rem" }}>Title</div>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter new title"
-            style={{ fontSize: "1.1rem", padding: "0.5rem", width: "100%" }}
-          />
+          {Array.isArray(presetTitles) &&
+            presetTitles.map((preset) => (
+              <label
+                key={preset}
+                style={{ display: "block", marginBottom: ".5rem" }}
+              >
+                <input
+                  type="radio"
+                  name="title"
+                  value={preset}
+                  checked={titleMode === "preset" && selectedPreset === preset}
+                  onChange={handleTitleChange}
+                  style={{ marginRight: ".5rem" }}
+                />
+                {preset}
+              </label>
+            ))}
+          <label style={{ display: "block", marginBottom: ".5rem" }}>
+            <input
+              type="radio"
+              name="title"
+              value="custom"
+              checked={titleMode === "custom"}
+              onChange={handleTitleChange}
+              style={{ marginRight: ".5rem" }}
+            />
+            Custom:
+            <input
+              type="text"
+              value={customTitle}
+              onChange={handleCustomTitleChange}
+              disabled={titleMode !== "custom"}
+              placeholder="Enter custom title"
+              style={{
+                fontSize: "1.1rem",
+                padding: "0.5rem",
+                marginLeft: ".5rem",
+              }}
+            />
+          </label>
         </div>
         {/* Subtitle Section */}
         <div style={{ width: "100%", marginBottom: "2rem" }}>

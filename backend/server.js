@@ -102,6 +102,18 @@ app.get("/get-image-options", (req, res) => {
   }
 });
 
+// Endpoint to get preset titles from titles.js
+app.get("/get-preset-titles", (req, res) => {
+  const titlesPath = path.join(__dirname, "database/titles.js");
+  try {
+    // titles.js should export an array of strings
+    const titles = require(titlesPath);
+    res.json(titles);
+  } catch (err) {
+    res.status(500).json({ error: "Could not read titles.js" });
+  }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server listening on http://0.0.0.0:${PORT}`);
 });
