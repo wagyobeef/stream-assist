@@ -40,6 +40,36 @@
     "url": "/gifs/smiling-gengar.gif"
   },
   {
+    "id": "panicked-psyduck",
+    "label": "Panicked Psyduck",
+    "url": "/gifs/panicked-psyduck.gif"
+  },
+  {
+    "id": "sleeping-psyduck",
+    "label": "Sleeping Psyduck",
+    "url": "/gifs/sleeping-psyduck.gif"
+  },
+  {
+    "id": "confused-psyduck",
+    "label": "Confused Psyduck",
+    "url": "/gifs/confused-psyduck.gif"
+  },
+  {
+    "id": "happy-slowpoke",
+    "label": "Happy Slowpoke",
+    "url": "/gifs/happy-slowpoke.gif"
+  },
+  {
+    "id": "gorilla-charizard",
+    "label": "Gorilla Charizard",
+    "url": "/gifs/gorilla-charizard.gif"
+  },
+  {
+    "id": "angry-jigglypuff",
+    "label": "Angry Jigglypuff",
+    "url": "/gifs/angry-jigglypuff.gif"
+  },
+  {
     "id": "subway-surfer",
     "label": "Subway Surfer",
     "url": "/gifs/subway-surfer.gif"
