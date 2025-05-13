@@ -98,7 +98,12 @@ const DisplayScreen: React.FC = () => {
         <img
           src={`${API_BASE_URL}${state.image.url}`}
           alt={state.image.label || "Gif"}
-          style={{ marginTop: "3rem", width: "18rem", height: "auto" }}
+          style={{
+            marginTop: "3rem",
+            width: "18rem",
+            height: "auto",
+            borderRadius: ".25rem",
+          }}
         />
       )}
     </div>
